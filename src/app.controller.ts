@@ -1,12 +1,36 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Post, Body } from '@nestjs/common';
+import { KafkaService, UserCreatedEvent } from './kafka/kafka.service';
 
-@Controller()
+export class CreateUserDto {
+  email: string;
+  name: string;
+}
+
+export class ProcessOrderDto {
+  userId: string;
+  amount: number;
+}
+
+@Controller('api')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly kafkaService: KafkaService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post('users')
+  async createUser(@Body() createUserDto: CreateUserDto) {
+    const userId = `user_${Date.now()}`;
+
+    const userCreatedEvent: UserCreatedEvent = {
+      userId,
+      email: createUserDto.email,
+      name: createUserDto.name,
+      createdAt: new Date(),
+    };
+
+    this.kafkaService.publishUserCreated(userCreatedEvent);
+
+    return {
+      success: true,
+      userId,
+    };
   }
 }

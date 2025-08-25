@@ -9,14 +9,6 @@ export interface UserCreatedEvent {
   createdAt: Date;
 }
 
-export interface OrderProcessedEvent {
-  orderId: string;
-  userId: string;
-  amount: number;
-  status: 'completed' | 'failed';
-  processedAt: Date;
-}
-
 export enum DomainEvents {
   UserCreated = 'user.created',
 }

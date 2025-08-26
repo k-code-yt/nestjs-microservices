@@ -6,11 +6,6 @@ export class CreateUserDto {
   name: string;
 }
 
-export class ProcessOrderDto {
-  userId: string;
-  amount: number;
-}
-
 @Controller('api')
 export class AppController {
   constructor(private readonly kafkaService: KafkaService) {}

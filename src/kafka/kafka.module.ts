@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Partitioners } from 'kafkajs';
-import { KafkaService } from './kafka.service';
 import { KafkaConstants } from './kafka.constants';
+import { KafkaService } from './kafka.service';
 
 @Module({
   imports: [
@@ -11,14 +11,6 @@ import { KafkaConstants } from './kafka.constants';
         name: KafkaConstants.InjectionTokens.Client,
         transport: Transport.KAFKA,
         options: {
-          client: {
-            clientId: KafkaConstants.ClientId,
-            brokers: ['localhost:9092'],
-          },
-          consumer: {
-            groupId: KafkaConstants.ConsumerGroups.Default,
-            allowAutoTopicCreation: true,
-          },
           producer: {
             allowAutoTopicCreation: true,
             maxInFlightRequests: 1,
